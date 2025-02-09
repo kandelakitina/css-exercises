@@ -5,11 +5,19 @@
   };
   outputs = { flakelight, nixpkgs, ... }:
     flakelight ./. {
-      devShell.packages = pkgs:
-        with pkgs;
-        with nodePackages; [
-          hello
-          live-server
-        ];
+      devShell = {
+        packages = pkgs:
+          with pkgs;
+          with nodePackages; [
+            nodejs
+            hello
+            live-server
+            pm2
+          ];
+        shellHook = ''
+          unset name
+          pm2 start live-server
+        '';
+      };
     };
 }
